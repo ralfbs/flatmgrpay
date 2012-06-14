@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for the Flat Manager Payment extension in the FRONTEND</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_flatmgrpay_domain_model_booking">Representation of one Transfer</label>
+			<label index="tx_flatmgrpay_domain_model_booking.feuser">feuser</label>
+			<label index="tx_flatmgrpay_domain_model_booking.flat">flat</label>
+			<label index="tx_flatmgrpay_domain_model_booking.startday">startday</label>
+			<label index="tx_flatmgrpay_domain_model_booking.days">days</label>
+			<label index="tx_flatmgrpay_domain_model_booking.persons">persons</label>
+		</languageKey>
+	</data>
+</T3locallang>

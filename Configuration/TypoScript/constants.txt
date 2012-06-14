@@ -1,0 +1,14 @@
+plugin.tx_flatmgrpay {
+	view {
+		# cat=plugin.tx_flatmgrpay/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:flatmgrpay/Resources/Private/Templates/
+		# cat=plugin.tx_flatmgrpay/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:flatmgrpay/Resources/Private/Partials/
+		# cat=plugin.tx_flatmgrpay/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:flatmgrpay/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_flatmgrpay//a; type=string; label=Default storage PID
+		storagePid = 
+	}
+}
