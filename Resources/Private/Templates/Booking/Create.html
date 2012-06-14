@@ -12,20 +12,19 @@ in /Configuration/ExtensionBuilder/settings.yaml:
 Otherwise your changes will be overwritten the next time you save the extension in the extension builder
 
 <f:section name="main">
-<h1>New Booking</h1>
+<h1>Buchung bestätigen</h1>
 
 <f:flashMessages />
 
-<f:render partial="FormErrors" />
-
-<f:form action="create"  name="newBooking" object="{newBooking}">
-<f:render partial="Booking/FormFields" />
-	<f:form.submit value="Create new" />
-	<f:for each="{paymentMethods}" as="paymentMethod">
-	<f:debug>{paymentMethod}</f:debug>
-	<img src='<f:translate key="LLL:EXT:paymentlib_worldpay/res/rbs.jpg" />' alt=" "/>
+<form method="post" action="{formAction}">
+	<f:for each="{hiddenFields}" as="hiddenField" key="name">
+		<input name='{name}' type="hidden" value="{hiddenField}" />
 	</f:for>
+	<input type="submit" value="Pay!" />
+</form>
 
-</f:form>
+
+<f:debug>{booking}</f:debug>
+
 
 </f:section>

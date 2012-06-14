@@ -7,11 +7,12 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tx_flatmgrpay_domain_model_booking">Representation of one Transfer</label>
-			<label index="tx_flatmgrpay_domain_model_booking.feuser">feuser</label>
-			<label index="tx_flatmgrpay_domain_model_booking.flat">flat</label>
-			<label index="tx_flatmgrpay_domain_model_booking.startday">startday</label>
-			<label index="tx_flatmgrpay_domain_model_booking.days">days</label>
-			<label index="tx_flatmgrpay_domain_model_booking.persons">persons</label>
+			<label index="tx_flatmgrpay_domain_model_booking.name">Name</label>
+			<label index="tx_flatmgrpay_domain_model_booking.flat">Zimmer</label>
+			<label index="tx_flatmgrpay_domain_model_booking.startday">Anreisetag</label>
+			<label index="tx_flatmgrpay_domain_model_booking.days">Nächte</label>
+			<label index="tx_flatmgrpay_domain_model_booking.persons">Personen</label>
+			<label index="tx_flatmgrpay_domain_model_booking.feuser">FeUser</label>
 		</languageKey>
 	</data>
 </T3locallang>

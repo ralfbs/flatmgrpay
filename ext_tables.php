@@ -16,7 +16,7 @@ t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Flat Manager 
 			$TCA['tx_flatmgrpay_domain_model_booking'] = array(
 				'ctrl' => array(
 					'title'	=> 'LLL:EXT:flatmgrpay/Resources/Private/Language/locallang_db.xml:tx_flatmgrpay_domain_model_booking',
-					'label' => 'feuser',
+					'label' => 'name',
 					'tstamp' => 'tstamp',
 					'crdate' => 'crdate',
 					'cruser_id' => 'cruser_id',

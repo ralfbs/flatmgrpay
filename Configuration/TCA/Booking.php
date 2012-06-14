@@ -6,10 +6,10 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_flatmgrpay_domain_model_booking'] = array(
 	'ctrl' => $TCA['tx_flatmgrpay_domain_model_booking']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, feuser, flat, startday, days, persons',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, flat, startday, days, persons, feuser',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, feuser, flat, startday, days, persons,--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, flat, startday, days, persons, feuser,--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -93,9 +93,9 @@ $TCA['tx_flatmgrpay_domain_model_booking'] = array(
 				),
 			),
 		),
-		'feuser' => array(
+		'name' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:flatmgrpay/Resources/Private/Language/locallang_db.xml:tx_flatmgrpay_domain_model_booking.feuser',
+			'label' => 'LLL:EXT:flatmgrpay/Resources/Private/Language/locallang_db.xml:tx_flatmgrpay_domain_model_booking.name',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -106,9 +106,13 @@ $TCA['tx_flatmgrpay_domain_model_booking'] = array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:flatmgrpay/Resources/Private/Language/locallang_db.xml:tx_flatmgrpay_domain_model_booking.flat',
 			'config' => array(
-				'type' => 'input',
-				'size' => 30,
-				'eval' => 'trim'
+				'type' => 'select',
+				'items' => array(
+					array('-- Label --', 0),
+				),
+				'size' => 1,
+				'maxitems' => 1,
+				'eval' => 'required'
 			),
 		),
 		'startday' => array(
@@ -125,8 +129,8 @@ $TCA['tx_flatmgrpay_domain_model_booking'] = array(
 			'label' => 'LLL:EXT:flatmgrpay/Resources/Private/Language/locallang_db.xml:tx_flatmgrpay_domain_model_booking.days',
 			'config' => array(
 				'type' => 'input',
-				'size' => 30,
-				'eval' => 'trim'
+				'size' => 4,
+				'eval' => 'int,required'
 			),
 		),
 		'persons' => array(
@@ -134,8 +138,18 @@ $TCA['tx_flatmgrpay_domain_model_booking'] = array(
 			'label' => 'LLL:EXT:flatmgrpay/Resources/Private/Language/locallang_db.xml:tx_flatmgrpay_domain_model_booking.persons',
 			'config' => array(
 				'type' => 'input',
-				'size' => 30,
-				'eval' => 'trim'
+				'size' => 4,
+				'eval' => 'int,required'
+			),
+		),
+		'feuser' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:flatmgrpay/Resources/Private/Language/locallang_db.xml:tx_flatmgrpay_domain_model_booking.feuser',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'fe_users',
+				'minitems' => 0,
+				'maxitems' => 1,
 			),
 		),
 	),

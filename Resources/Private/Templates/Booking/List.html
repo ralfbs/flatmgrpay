@@ -18,7 +18,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
 
 <table  class="tx_flatmgrpay" >
 	<tr>
-		<th><f:translate key="tx_flatmgrpay_domain_model_booking.feuser" /></th>
+		<th><f:translate key="tx_flatmgrpay_domain_model_booking.name" /></th>
 		<th><f:translate key="tx_flatmgrpay_domain_model_booking.flat" /></th>
 		<th><f:translate key="tx_flatmgrpay_domain_model_booking.startday" /></th>
 		<th><f:translate key="tx_flatmgrpay_domain_model_booking.days" /></th>
@@ -29,7 +29,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
 
 	<f:for each="{bookings}" as="booking">
 		<tr>
-			<td><f:link.action action="show" arguments="{booking : booking}"> {booking.feuser}</f:link.action></td>
+			<td><f:link.action action="show" arguments="{booking : booking}"> {booking.name}</f:link.action></td>
 			<td><f:link.action action="show" arguments="{booking : booking}"> {booking.flat}</f:link.action></td>
 			<td><f:link.action action="show" arguments="{booking : booking}"> {booking.startday}</f:link.action></td>
 			<td><f:link.action action="show" arguments="{booking : booking}"> {booking.days}</f:link.action></td>

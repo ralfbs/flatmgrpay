@@ -6,11 +6,12 @@ CREATE TABLE tx_flatmgrpay_domain_model_booking (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 
-	feuser varchar(255) DEFAULT '' NOT NULL,
-	flat varchar(255) DEFAULT '' NOT NULL,
+	name varchar(255) DEFAULT '' NOT NULL,
+	flat int(11) DEFAULT '0' NOT NULL,
 	startday varchar(255) DEFAULT '' NOT NULL,
-	days varchar(255) DEFAULT '' NOT NULL,
-	persons varchar(255) DEFAULT '' NOT NULL,
+	days int(11) DEFAULT '0' NOT NULL,
+	persons int(11) DEFAULT '0' NOT NULL,
+	feuser int(11) unsigned DEFAULT '0',
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,

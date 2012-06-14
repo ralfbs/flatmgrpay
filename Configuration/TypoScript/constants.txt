@@ -11,4 +11,14 @@ plugin.tx_flatmgrpay {
 		# cat=plugin.tx_flatmgrpay//a; type=string; label=Default storage PID
 		storagePid = 
 	}
+	settings {
+		# cat=plugin.tx_flatmgrpay//a; type=string; label=Kosten für eine Person
+		cost.1 = 33	
+		# cat=plugin.tx_flatmgrpay//a; type=string; label=Kosten für eine Person
+		cost.2 = 28	
+		# cat=plugin.tx_flatmgrpay//a; type=string; label=Kosten für eine Person
+		cost.1 = 25	
+		# cat=plugin.tx_flatmgrpay//a; type=string; label=Kosten für eine Person
+		cost.1 = 20								
+	}
 }

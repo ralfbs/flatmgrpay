@@ -8,11 +8,12 @@
 	<data type="array">
 	<languageKey index="default" type="array">
 	   
-			<label index="feuser.description">feuser</label>
-			<label index="flat.description">flat</label>
-			<label index="startday.description">startday</label>
-			<label index="days.description">days</label>
-			<label index="persons.description">persons</label>
+			<label index="name.description">Name</label>
+			<label index="flat.description">Zimmer</label>
+			<label index="startday.description">Anreisetag</label>
+			<label index="days.description">Nächte</label>
+			<label index="persons.description">Personen</label>
+			<label index="feuser.description">FeUser</label>
 		</languageKey>
 	</data>
 </T3locallang>

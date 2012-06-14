@@ -53,33 +53,38 @@ class Tx_Flatmgrpay_Domain_Model_BookingTest extends Tx_Extbase_Tests_Unit_BaseT
 	/**
 	 * @test
 	 */
-	public function getFeuserReturnsInitialValueForString() { }
+	public function getNameReturnsInitialValueForString() { }
 
 	/**
 	 * @test
 	 */
-	public function setFeuserForStringSetsFeuser() { 
-		$this->fixture->setFeuser('Conceived at T3CON10');
+	public function setNameForStringSetsName() { 
+		$this->fixture->setName('Conceived at T3CON10');
 
 		$this->assertSame(
 			'Conceived at T3CON10',
-			$this->fixture->getFeuser()
+			$this->fixture->getName()
 		);
 	}
 	
 	/**
 	 * @test
 	 */
-	public function getFlatReturnsInitialValueForString() { }
+	public function getFlatReturnsInitialValueForInteger() { 
+		$this->assertSame(
+			0,
+			$this->fixture->getFlat()
+		);
+	}
 
 	/**
 	 * @test
 	 */
-	public function setFlatForStringSetsFlat() { 
-		$this->fixture->setFlat('Conceived at T3CON10');
+	public function setFlatForIntegerSetsFlat() { 
+		$this->fixture->setFlat(12);
 
 		$this->assertSame(
-			'Conceived at T3CON10',
+			12,
 			$this->fixture->getFlat()
 		);
 	}
@@ -104,16 +109,21 @@ class Tx_Flatmgrpay_Domain_Model_BookingTest extends Tx_Extbase_Tests_Unit_BaseT
 	/**
 	 * @test
 	 */
-	public function getDaysReturnsInitialValueForString() { }
+	public function getDaysReturnsInitialValueForInteger() { 
+		$this->assertSame(
+			0,
+			$this->fixture->getDays()
+		);
+	}
 
 	/**
 	 * @test
 	 */
-	public function setDaysForStringSetsDays() { 
-		$this->fixture->setDays('Conceived at T3CON10');
+	public function setDaysForIntegerSetsDays() { 
+		$this->fixture->setDays(12);
 
 		$this->assertSame(
-			'Conceived at T3CON10',
+			12,
 			$this->fixture->getDays()
 		);
 	}
@@ -121,19 +131,34 @@ class Tx_Flatmgrpay_Domain_Model_BookingTest extends Tx_Extbase_Tests_Unit_BaseT
 	/**
 	 * @test
 	 */
-	public function getPersonsReturnsInitialValueForString() { }
+	public function getPersonsReturnsInitialValueForInteger() { 
+		$this->assertSame(
+			0,
+			$this->fixture->getPersons()
+		);
+	}
 
 	/**
 	 * @test
 	 */
-	public function setPersonsForStringSetsPersons() { 
-		$this->fixture->setPersons('Conceived at T3CON10');
+	public function setPersonsForIntegerSetsPersons() { 
+		$this->fixture->setPersons(12);
 
 		$this->assertSame(
-			'Conceived at T3CON10',
+			12,
 			$this->fixture->getPersons()
 		);
 	}
+	
+	/**
+	 * @test
+	 */
+	public function getFeuserReturnsInitialValueForTx_Extbase_Domain_Model_FrontendUser() { }
+
+	/**
+	 * @test
+	 */
+	public function setFeuserForTx_Extbase_Domain_Model_FrontendUserSetsFeuser() { }
 	
 }
 ?>

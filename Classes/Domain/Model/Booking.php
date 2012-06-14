@@ -34,115 +34,49 @@
 class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
-	 * feuser
+	 * Name
 	 *
 	 * @var string
 	 */
-	protected $feuser;
+	protected $name;
 
 	/**
-	 * flat
+	 * Zimmer
 	 *
-	 * @var string
+	 * @var integer
+	 * @validate NotEmpty
 	 */
 	protected $flat;
 
 	/**
-	 * startday
+	 * Anreisetag
 	 *
 	 * @var string
 	 */
 	protected $startday;
 
 	/**
-	 * days
+	 * Nächte
 	 *
-	 * @var string
+	 * @var integer
+	 * @validate NotEmpty
 	 */
 	protected $days;
 
 	/**
-	 * persons
+	 * Personen
 	 *
-	 * @var string
+	 * @var integer
+	 * @validate NotEmpty
 	 */
 	protected $persons;
 
 	/**
-	 * Returns the feuser
+	 * FeUser
 	 *
-	 * @return string $feuser
+	 * @var Tx_Extbase_Domain_Model_FrontendUser
 	 */
-	public function getFeuser() {
-		return $this->feuser;
-	}
-
-	/**
-	 * Sets the feuser
-	 *
-	 * @param string $feuser
-	 * @return void
-	 */
-	public function setFeuser($feuser) {
-		$this->feuser = $feuser;
-	}
-
-	/**
-	 * Returns the flat
-	 *
-	 * @return string $flat
-	 */
-	public function getFlat() {
-		return $this->flat;
-	}
-
-	/**
-	 * Sets the flat
-	 *
-	 * @param string $flat
-	 * @return void
-	 */
-	public function setFlat($flat) {
-		$this->flat = $flat;
-	}
-
-	/**
-	 * Returns the days
-	 *
-	 * @return string $days
-	 */
-	public function getDays() {
-		return $this->days;
-	}
-
-	/**
-	 * Sets the days
-	 *
-	 * @param string $days
-	 * @return void
-	 */
-	public function setDays($days) {
-		$this->days = $days;
-	}
-
-	/**
-	 * Returns the persons
-	 *
-	 * @return string $persons
-	 */
-	public function getPersons() {
-		return $this->persons;
-	}
-
-	/**
-	 * Sets the persons
-	 *
-	 * @param string $persons
-	 * @return void
-	 */
-	public function setPersons($persons) {
-		$this->persons = $persons;
-	}
+	protected $feuser;
 
 	/**
 	 * Returns the startday
@@ -161,6 +95,101 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	 */
 	public function setStartday($startday) {
 		$this->startday = $startday;
+	}
+
+	/**
+	 * Returns the flat
+	 *
+	 * @return integer flat
+	 */
+	public function getFlat() {
+		return $this->flat;
+	}
+
+	/**
+	 * Sets the flat
+	 *
+	 * @param integer $flat
+	 * @return integer flat
+	 */
+	public function setFlat($flat) {
+		$this->flat = $flat;
+	}
+
+	/**
+	 * Returns the days
+	 *
+	 * @return integer days
+	 */
+	public function getDays() {
+		return $this->days;
+	}
+
+	/**
+	 * Sets the days
+	 *
+	 * @param integer $days
+	 * @return integer days
+	 */
+	public function setDays($days) {
+		$this->days = $days;
+	}
+
+	/**
+	 * Returns the persons
+	 *
+	 * @return integer persons
+	 */
+	public function getPersons() {
+		return $this->persons;
+	}
+
+	/**
+	 * Sets the persons
+	 *
+	 * @param integer $persons
+	 * @return integer persons
+	 */
+	public function setPersons($persons) {
+		$this->persons = $persons;
+	}
+
+	/**
+	 * Returns the name
+	 *
+	 * @return string name
+	 */
+	public function getName() {
+		return $this->name;
+	}
+
+	/**
+	 * Sets the name
+	 *
+	 * @param string $name
+	 * @return string name
+	 */
+	public function setName($name) {
+		$this->name = $name;
+	}
+
+	/**
+	 * Returns the feuser
+	 *
+	 * @return Tx_Extbase_Domain_Model_FrontendUser $feuser
+	 */
+	public function getFeuser() {
+		return $this->feuser;
+	}
+
+	/**
+	 * Sets the feuser
+	 *
+	 * @param Tx_Extbase_Domain_Model_FrontendUser $feuser
+	 * @return void
+	 */
+	public function setFeuser(Tx_Extbase_Domain_Model_FrontendUser $feuser) {
+		$this->feuser = $feuser;
 	}
 
 }

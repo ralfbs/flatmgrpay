@@ -8,11 +8,12 @@
 		<languageKey index="default" type="array">
             
 			<label index="tx_flatmgrpay_domain_model_booking">Booking</label>
-			<label index="tx_flatmgrpay_domain_model_booking.feuser">Feuser</label>
+			<label index="tx_flatmgrpay_domain_model_booking.name">Name</label>
 			<label index="tx_flatmgrpay_domain_model_booking.flat">Flat</label>
 			<label index="tx_flatmgrpay_domain_model_booking.startday">Startday</label>
 			<label index="tx_flatmgrpay_domain_model_booking.days">Days</label>
 			<label index="tx_flatmgrpay_domain_model_booking.persons">Persons</label>
+			<label index="tx_flatmgrpay_domain_model_booking.feuser">Feuser</label>
 
 		</languageKey>
 	</data>
