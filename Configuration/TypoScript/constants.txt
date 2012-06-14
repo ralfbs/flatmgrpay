@@ -12,13 +12,13 @@ plugin.tx_flatmgrpay {
 		storagePid = 
 	}
 	settings {
-		# cat=plugin.tx_flatmgrpay//a; type=string; label=Kosten für eine Person
+		# cat=plugin.tx_flatmgrpay//a; type=int; label=Kosten für eine Person
 		cost.1 = 33	
-		# cat=plugin.tx_flatmgrpay//a; type=string; label=Kosten für eine Person
+		# cat=plugin.tx_flatmgrpay//a; type=int; label=Kosten für zwei Person
 		cost.2 = 28	
-		# cat=plugin.tx_flatmgrpay//a; type=string; label=Kosten für eine Person
-		cost.1 = 25	
-		# cat=plugin.tx_flatmgrpay//a; type=string; label=Kosten für eine Person
-		cost.1 = 20								
+		# cat=plugin.tx_flatmgrpay//a; type=int; label=Kosten für drei Person
+		cost.3 = 25	
+		# cat=plugin.tx_flatmgrpay//a; type=int; label=Kosten für vier Person
+		cost.4 = 20								
 	}
 }

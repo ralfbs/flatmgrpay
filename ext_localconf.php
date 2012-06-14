@@ -7,12 +7,12 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Faltmgrpay',
 	array(
-		'Booking' => 'new, create',
+		'Booking' => 'new, create, confirm',
 		
 	),
 	// non-cacheable actions
 	array(
-		'Booking' => 'new, create',
+		'Booking' => 'new, create, confirm',
 		
 	)
 );

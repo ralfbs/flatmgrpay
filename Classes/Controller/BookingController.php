@@ -89,16 +89,27 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		$this->view->assign('newBooking', $newBooking);
 	}
 
-	
-	
-	
 	/**
 	 * action create
 	 *
 	 * @param $newBooking x_Flatmgrpay_Domain_Model_Booking       	
 	 * @return void
 	 */
-	public function createAction(Tx_Flatmgrpay_Domain_Model_Booking $booking) {
+	public function createAction(Tx_Flatmgrpay_Domain_Model_Booking $newBooking) {
+		$this->bookingRepository->add($newBooking);
+		$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
+		/* @var $persistenceManager Tx_Extbase_Persistence_Manager */
+		$persistenceManager->persistAll();
+		$this->redirect('confirm', NULL, null, array('booking'=>$newBooking));
+	}
+
+	/**
+	 * action create
+	 *
+	 * @param $newBooking x_Flatmgrpay_Domain_Model_Booking       	
+	 * @return void
+	 */
+	public function confirmAction(Tx_Flatmgrpay_Domain_Model_Booking $booking) {
 		$fail = false;
 		$selectedPaymentMethod = 'paymentlib_worldpay_creditcard';
 		$providerFactoryObj = tx_paymentlib_providerfactory::getInstance();
@@ -108,12 +119,12 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 			$this->flashMessageContainer->add('ERROR: Could not initialize transaction.');
 			$fail = true;
 		}
-		$this->bookingRepository->add($booking);
+		;
 		$transactionDetails = array(
 			'transaction' => array(
-			'amount' => '6.60', 'currency' => 'EUR'
+			'amount' => $booking->getAnzahlung() * 100, 'currency' => 'EUR'
 		), 'options' => array(
-			'reference' => 'abx'
+			'reference' => $booking->getUid()
 		)
 		);
 		$ok = $providerObj->transaction_setDetails($transactionDetails);
@@ -130,6 +141,16 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		$this->view->assign('booking', $booking);
 	}
 
+	
+	/**
+	 * called by worldpay
+	 * @return void
+	 */
+	public function callbackAction() {
+		
+	}
+	
+	
 	/**
 	 * action transact - call the actual transaction
 	 *
