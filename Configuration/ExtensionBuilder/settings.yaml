@@ -51,7 +51,7 @@ overwriteSettings:
   Resources:
     Private:
       Language:
-        #locallang.xml: merge
+        locallang.xml: keep
         #locallang.xlf: merge
       Templates: keep
 

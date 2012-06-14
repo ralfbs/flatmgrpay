@@ -89,6 +89,9 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		$this->view->assign('newBooking', $newBooking);
 	}
 
+	
+	
+	
 	/**
 	 * action create
 	 *
@@ -105,10 +108,10 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 			$this->flashMessageContainer->add('ERROR: Could not initialize transaction.');
 			$fail = true;
 		}
-		$amount = $booking->getDays() * 6.6;
+		$this->bookingRepository->add($booking);
 		$transactionDetails = array(
 			'transaction' => array(
-			'amount' => $amount, 'currency' => 'EUR'
+			'amount' => '6.60', 'currency' => 'EUR'
 		), 'options' => array(
 			'reference' => 'abx'
 		)
@@ -121,15 +124,8 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		if (! $fail) {
 			$formAction = $providerObj->transaction_formGetActionURI();
 			$this->view->assign('formAction', $formAction);
-			$hiddenFields = '';
 			$hiddenFieldsArr = $providerObj->transaction_formGetHiddenFields();
-			foreach ($hiddenFieldsArr as $key => $value) {
-				$hiddenFields .= '<input name=' . $key . ' type="hidden" value="' . htmlspecialchars($value) . '" />' . chr(10);
-			}
 			$this->view->assign('hiddenFields', $hiddenFieldsArr);
-			$form = '<form method="post" action="' . $formAction . '">' . $hiddenFields . '<input type="submit" value="Pay!" /></form>';
-			
-			$this->bookingRepository->add($booking);
 		}
 		$this->view->assign('booking', $booking);
 	}

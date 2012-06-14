@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,13 +22,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  *
- *
  * @package flatmgrpay
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
+ * @license http://www.gnu.org/licenses/gpl.html GNU General Public License,
+ *          version 3 or later
  */
 class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_AbstractEntity {
 
@@ -43,8 +40,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Zimmer
 	 *
-	 * @var integer
-	 * @validate NotEmpty
+	 * @var integer @validate NotEmpty
 	 */
 	protected $flat;
 
@@ -58,16 +54,14 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Nächte
 	 *
-	 * @var integer
-	 * @validate NotEmpty
+	 * @var integer @validate NotEmpty
 	 */
 	protected $days;
 
 	/**
 	 * Personen
 	 *
-	 * @var integer
-	 * @validate NotEmpty
+	 * @var integer @validate NotEmpty
 	 */
 	protected $persons;
 
@@ -90,7 +84,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the startday
 	 *
-	 * @param string $startday
+	 * @param $startday string       	
 	 * @return string startday
 	 */
 	public function setStartday($startday) {
@@ -109,7 +103,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the flat
 	 *
-	 * @param integer $flat
+	 * @param $flat integer       	
 	 * @return integer flat
 	 */
 	public function setFlat($flat) {
@@ -128,7 +122,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the days
 	 *
-	 * @param integer $days
+	 * @param $days integer       	
 	 * @return integer days
 	 */
 	public function setDays($days) {
@@ -147,7 +141,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the persons
 	 *
-	 * @param integer $persons
+	 * @param $persons integer       	
 	 * @return integer persons
 	 */
 	public function setPersons($persons) {
@@ -166,7 +160,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the name
 	 *
-	 * @param string $name
+	 * @param $name string       	
 	 * @return string name
 	 */
 	public function setName($name) {
@@ -185,12 +179,44 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the feuser
 	 *
-	 * @param Tx_Extbase_Domain_Model_FrontendUser $feuser
+	 * @param $feuser Tx_Extbase_Domain_Model_FrontendUser       	
 	 * @return void
 	 */
 	public function setFeuser(Tx_Extbase_Domain_Model_FrontendUser $feuser) {
 		$this->feuser = $feuser;
 	}
 
+	/**
+	 * Berechnet die Gesamtkosten für den angegebenen Zeitraum
+	 *
+	 * @return float
+	 */
+	public function getTotal() {
+		switch ((int) $this->getPersons()) {
+			case 1:
+				$costPerDay = 33;
+				break;
+			case 2:
+				$costPerDay = 28;
+				break;
+			case 3:
+				$costPerDay = 25;
+				break;
+			case 4:
+				$costPerDay = 20;
+				break;
+			default:
+				$costPerDay = 33;
+				break;
+		}
+		return $this->getDays() * $costPerDay;
+	}
+
+	/**
+	 * Berechnet die Höhe der notwendig Anzahlung
+	 */
+	public function getAnzahlung() {
+		return $this->getTotal() * 0.2;
+	}
 }
 ?>
