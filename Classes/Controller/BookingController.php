@@ -82,9 +82,24 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	 */
 	public function newAction(Tx_Flatmgrpay_Domain_Model_Booking $newBooking = NULL) {
 		$this->_initPaymentProviders();
+		var_dump($this->settings);
 		foreach ($this->_paymentProviders as $providerObj) {
 			$tmpArr = $providerObj->getAvailablePaymentMethods();
 		}
+		if (array_key_exists('tx_flatmgr_pi1', $_GET)) {
+			$flatmgrParams = $_GET['tx_flatmgr_pi1'];
+			$sessionData = serialize($flatmgrParams);
+			$GLOBALS['TSFE']->fe_user->setKey('ses', 'tx_flatmgrpay', $sessionData);
+			$GLOBALS['TSFE']->fe_user->storeSessionData();
+		}
+		/**
+		 * restore the session
+		 * @var array	('start', 'end', 'email', 'flatUid')
+		 */
+		$flatmgrParams = unserialize($GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_flatmgrpay'));
+		$startTimestamp = strtotime($flatmgrParams['start']);
+		$endTimestamp = strtotime($flatmgrParams['end']);
+		$this->view->assign('days', ($endTimestamp - $startTimestamp) / 86400);
 		$this->view->assign('paymentMethods', $tmpArr);
 		$this->view->assign('newBooking', $newBooking);
 	}
@@ -98,9 +113,13 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	public function createAction(Tx_Flatmgrpay_Domain_Model_Booking $newBooking) {
 		$this->bookingRepository->add($newBooking);
 		$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
-		/* @var $persistenceManager Tx_Extbase_Persistence_Manager */
+		/*
+		 * @var $persistenceManager Tx_Extbase_Persistence_Manager
+		 */
 		$persistenceManager->persistAll();
-		$this->redirect('confirm', NULL, null, array('booking'=>$newBooking));
+		$this->redirect('confirm', NULL, null, array(
+			'booking' => $newBooking
+		));
 	}
 
 	/**
@@ -141,16 +160,14 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		$this->view->assign('booking', $booking);
 	}
 
-	
 	/**
 	 * called by worldpay
+	 * 
 	 * @return void
 	 */
 	public function callbackAction() {
-		
 	}
-	
-	
+
 	/**
 	 * action transact - call the actual transaction
 	 *

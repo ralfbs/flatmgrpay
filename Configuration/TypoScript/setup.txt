@@ -9,6 +9,10 @@ plugin.tx_flatmgrpay {
 	}
 }
 
+plugin.tx_flatmgrpay.settings {
+	cost = {$plugin.tx_flatmgrpay.settings.cost}
+}
+
 plugin.tx_flatmgrpay._CSS_DEFAULT_STYLE (
 	input.f3-form-error {
 		background-color:#FF9F9F;
