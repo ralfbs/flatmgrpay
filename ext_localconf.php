@@ -6,7 +6,7 @@ if (!defined('TYPO3_MODE')) {
 
 Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
-	'Faltmgrpay',
+	'Flatmgrpay',
 	array(
 		'Booking' => 'new, create, confirm, scan',
 		
