@@ -150,7 +150,8 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 			return '';
 		}
 		$fail = false;
-		$selectedPaymentMethod = 'paymentlib_worldpay_creditcard';
+		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['flatmgrpay']);
+		$selectedPaymentMethod = $extConf['selectedPaymentMethod']; 
 		$providerFactoryObj = tx_paymentlib_providerfactory::getInstance();
 		$providerObj = $providerFactoryObj->getProviderObjectByPaymentMethod($selectedPaymentMethod);
 		$ok = $providerObj->transaction_init(TX_PAYMENTLIB_TRANSACTION_ACTION_AUTHORIZEANDTRANSFER, $selectedPaymentMethod, TX_PAYMENTLIB_GATEWAYMODE_FORM, 'flatmgrpay');
@@ -158,7 +159,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 			$this->flashMessageContainer->add('ERROR: Could not initialize transaction.');
 			$fail = true;
 		}
-		;
+		
 		$transactionDetails = array(
 			'transaction' => array(
 			'amount' => $booking->getAnzahlung() * 100, 'currency' => 'EUR'

@@ -1,0 +1,3 @@
+# cat=flatmgrpay/basic; type=string; label=Force Payment Method: Only provide this one if set 
+selectedPaymentMethod = paymentlib_worldpay_creditcard
+
