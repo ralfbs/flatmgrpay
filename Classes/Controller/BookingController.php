@@ -82,24 +82,24 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	 */
 	public function newAction(Tx_Flatmgrpay_Domain_Model_Booking $newBooking = NULL) {
 		$this->_initPaymentProviders();
-		var_dump($this->settings);
 		foreach ($this->_paymentProviders as $providerObj) {
 			$tmpArr = $providerObj->getAvailablePaymentMethods();
 		}
+		/*
+		 * @var $flatSession Tx_Flatmgrpay_Session_Flat
+		 */
+		$flatSession = t3lib_div::makeInstance('Tx_Flatmgrpay_Session_Flat');
 		if (array_key_exists('tx_flatmgr_pi1', $_GET)) {
-			$flatmgrParams = $_GET['tx_flatmgr_pi1'];
-			$sessionData = serialize($flatmgrParams);
-			$GLOBALS['TSFE']->fe_user->setKey('ses', 'tx_flatmgrpay', $sessionData);
-			$GLOBALS['TSFE']->fe_user->storeSessionData();
+			$flatSession::writeToSession($_GET['tx_flatmgr_pi1']);
 		}
 		/**
 		 * restore the session
-		 * @var array	('start', 'end', 'email', 'flatUid')
+		 *
+		 * @var array 'end', 'days', 'email', 'flatUid', 'flat')
 		 */
-		$flatmgrParams = unserialize($GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_flatmgrpay'));
-		$startTimestamp = strtotime($flatmgrParams['start']);
-		$endTimestamp = strtotime($flatmgrParams['end']);
-		$this->view->assign('days', ($endTimestamp - $startTimestamp) / 86400);
+		$flatmgrParams = $flatSession::getParams();
+		$this->view->assignMultiple((array)$flatmgrParams);
+		$this->view->assign('days', $flatSession::getParam('days'));
 		$this->view->assign('paymentMethods', $tmpArr);
 		$this->view->assign('newBooking', $newBooking);
 	}
@@ -162,7 +162,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 
 	/**
 	 * called by worldpay
-	 * 
+	 *
 	 * @return void
 	 */
 	public function callbackAction() {
@@ -209,6 +209,30 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		$this->bookingRepository->remove($booking);
 		$this->flashMessageContainer->add('Your Booking was removed.');
 		$this->redirect('list');
+	}
+
+	/**
+	 * display a booking link for the mentioned flat (plugin)
+	 * return void
+	 */
+	public function bookinglinkAction() {
+	}
+
+	/**
+	 * Scan the request for any useful GET parameter from Flatmanager
+	 *
+	 * @return string '';
+	 */
+	public function scanAction() {
+		/*
+		 * @var $flatSession Tx_Flatmgrpay_Session_Flat
+		 */
+		$flatSession = t3lib_div::makeInstance('Tx_Flatmgrpay_Session_Flat');
+		$params = t3lib_div::_GP('tx_flatmgr_pi1');
+		if (!empty($params)) {
+			$flatSession::writeToSession($params);
+		}
+		$this->view->assign('flatParams', $flatSession::getParams());
 	}
 
 	/**

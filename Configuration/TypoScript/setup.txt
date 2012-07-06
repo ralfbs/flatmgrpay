@@ -7,11 +7,41 @@ plugin.tx_flatmgrpay {
 	persistence {
 		storagePid = {$plugin.tx_flatmgrpay.persistence.storagePid}
 	}
+	settings {
+		cost = {$plugin.tx_flatmgrpay.settings.cost}
+	}
 }
 
-plugin.tx_flatmgrpay.settings {
-	cost = {$plugin.tx_flatmgrpay.settings.cost}
-}
+
+
+
+# Bereitstellen der Informationen im TS
+# classischer Ansatz: über Controller + View (ggf. dort Zugriff auf Rep + Model)
+plugin.tx_flatmgrpay.widgets {
+
+  scanparams = USER
+  scanparams {
+    userFunc = tx_extbase_core_bootstrap->run
+    # see localconf.php
+    pluginName = Flatmgrpay
+    # extensionName (foo_bar => FooBar)
+    extensionName = Flatmgrpay
+ 
+    switchableControllerActions {
+        Booking {
+            1 = scan 
+        }
+    }
+ 
+    settings =< plugin.tx_flatmgrpay.settings
+    persistence =< plugin.tx_flatmgrpay.persistence
+    view =< plugin.tx_flatmgrpay.view
+  }
+  
+  
+  
+}  
+
 
 plugin.tx_flatmgrpay._CSS_DEFAULT_STYLE (
 	input.f3-form-error {
