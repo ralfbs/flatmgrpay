@@ -45,8 +45,17 @@ class Tx_Flatmgrpay_Session_Flat implements t3lib_Singleton {
 				unset($session['flatUid']);
 			}
 		}
-		
-		self::_writeToSession(array_merge($session, $params));
+		$newSession = $params;
+		if (!empty($session)) {
+			$newSession = array_merge((array)$session, (array) $params);
+		}
+		// make sure empty values do not overwrite
+		foreach($newSession as $key => $value) {
+			if (empty($value)) {
+				unset($newSession[$key]);
+			}
+		}
+		self::_writeToSession($newSession);
 	}
 
 	/**

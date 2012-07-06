@@ -45,6 +45,12 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	protected $bookingRepository;
 
 	/**
+	 * is this action dispatched?
+	 * @var boolean
+	 */
+	protected static $_dispatched = false;
+
+	/**
 	 * injectBookingRepository
 	 *
 	 * @param $bookingRepository Tx_Flatmgrpay_Domain_Repository_BookingRepository       	
@@ -99,7 +105,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		 */
 		$flatmgrParams = $flatSession::getParams();
 		$this->view->assignMultiple((array)$flatmgrParams);
-		$this->view->assign('days', $flatSession::getParam('days'));
+		$this->view->assign('hiddenFields', $flatSession::getParams());
 		$this->view->assign('paymentMethods', $tmpArr);
 		$this->view->assign('newBooking', $newBooking);
 	}
@@ -110,7 +116,17 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	 * @param $newBooking x_Flatmgrpay_Domain_Model_Booking       	
 	 * @return void
 	 */
-	public function createAction(Tx_Flatmgrpay_Domain_Model_Booking $newBooking) {
+	public function createAction(Tx_Flatmgrpay_Domain_Model_Booking $newBooking = null) {
+		if (null == $newBooking) {
+			/*@var $newBooking Tx_Flatmgrpay_Domain_Model_Booking */
+			$newBooking = t3lib_div::makeInstance('Tx_Flatmgrpay_Domain_Model_Booking');
+			$params = t3lib_div::_GP('newBooking');
+			$newBooking->setName($params['flat']);
+			$newBooking->setFlat($params['flatUid']);
+			$newBooking->setStartday($params['start']);
+			$newBooking->setDays($params['days']);
+			$newBooking->setPersons($params['persons']);
+		}
 		$this->bookingRepository->add($newBooking);
 		$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
 		/*
@@ -129,6 +145,10 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	public function confirmAction(Tx_Flatmgrpay_Domain_Model_Booking $booking) {
+
+		if (self::$_dispatched) {
+			return '';
+		}
 		$fail = false;
 		$selectedPaymentMethod = 'paymentlib_worldpay_creditcard';
 		$providerFactoryObj = tx_paymentlib_providerfactory::getInstance();
@@ -158,6 +178,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 			$this->view->assign('hiddenFields', $hiddenFieldsArr);
 		}
 		$this->view->assign('booking', $booking);
+		self:$_dispatched = true;
 	}
 
 	/**
@@ -234,6 +255,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		}
 		$this->view->assign('flatParams', $flatSession::getParams());
 	}
+
 
 	/**
 	 * include and initialize the Paymentlib

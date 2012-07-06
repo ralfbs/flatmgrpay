@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Payment Interface for Bookings and Reserveations of Rooms of Flat Manager (flatmgr)',
 	'category' => 'fe',
 	'shy' => 0,
-	'version' => '0.3',
+	'version' => '0.9.0',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
@@ -52,6 +52,7 @@ $EM_CONF[$_EXTKEY] = array(
 			'fluid' => '1.3',
 			'typo3' => '4.5',
             'flatmgr' => '2.7',
+		    'paymentlib' => '0.3',
 		),
 		'conflicts' => array(
 		),

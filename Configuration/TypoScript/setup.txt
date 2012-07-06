@@ -30,6 +30,8 @@ plugin.tx_flatmgrpay.widgets {
     switchableControllerActions {
         Booking {
             1 = scan 
+            2 = create
+            3 = confirm
         }
     }
  

@@ -12,6 +12,7 @@ in /Configuration/ExtensionBuilder/settings.yaml:
 Otherwise your changes will be overwritten the next time you save the extension in the extension builder
 
 <f:section name="main">
+<div class="tx-flatmgrpay-confirm">
 <h1>Buchung bestätigen</h1>
 
 <f:flashMessages />
@@ -43,7 +44,8 @@ Otherwise your changes will be overwritten the next time you save the extension 
 	<f:for each="{hiddenFields}" as="hiddenField" key="name">
 		<input name='{name}' type="hidden" value="{hiddenField}" />
 	</f:for>
-	<input type="submit" value="<f:format.currency currencySign="€">{booking.anzahlung}</f:format.currency> online zahlen" />
+	<input type="submit" value="<f:format.currency currencySign="€">{booking.anzahlung}</f:format.currency> jetzt online zahlen" />
+	<p> Wir leiten Sie gesicherte Seiten von WorldPay weiter zur Zahlungsabwicklung</p>
 </form>
 
 
