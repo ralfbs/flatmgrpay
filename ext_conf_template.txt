@@ -1,3 +1,5 @@
 # cat=flatmgrpay/basic; type=string; label=Force Payment Method: Only provide this one if set 
 selectedPaymentMethod = paymentlib_worldpay_creditcard
 
+# cat=flatmgrpay/basic; type=string; label=Fix booking end date by days: add the given number of days in order to fix a but in flatmgr on some OS 
+daysOffset = 0

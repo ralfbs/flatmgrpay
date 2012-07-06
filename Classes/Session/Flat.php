@@ -68,6 +68,15 @@ class Tx_Flatmgrpay_Session_Flat implements t3lib_Singleton {
 		if (array_key_exists('start', $params) and array_key_exists('end', $params)) {
 			$startTimestamp = strtotime($params['start']);
 			$endTimestamp = strtotime($params['end']);
+			
+			// fix calc on some OS!?
+			$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['flatmgrpay']);
+			$endTimestamp +=  (int)$extConf['daysOffset'] * 86400;
+			$endDate = new DateTime();
+			$endDate->setTimestamp($endTimestamp);
+			
+			$params['end'] = (string) $endDate->format('d.m.Y');
+			
 			$params['days'] = ($endTimestamp - $startTimestamp) / 86400;
 		}
 		return $params;
