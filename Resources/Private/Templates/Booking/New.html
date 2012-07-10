@@ -8,6 +8,16 @@
 	<p>Zeitraum: {start} - {end} ({days} Tage)</p>
 
 	<f:form action="create" name="newBooking" object="{newBooking}">
+		<f:for each="{hiddenFields}" as="hiddenField" key="key">
+			<input name="newBooking[{key}]" type="hidden" value="{hiddenField}" />
+		</f:for>
+		<label for="persons"><f:translate
+				key="tx_flatmgrpay_domain_model_booking.persons" /></label>
+		<select name="newBooking[persons]">
+			<option value="1">1</option>
+			<option value="2">2</option>
+		</select>
+		<f:form.submit value="{flat} jetzt reservieren" />
 	</f:form>
 
 </f:section>
