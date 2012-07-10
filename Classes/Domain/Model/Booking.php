@@ -218,22 +218,22 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	 * @return float
 	 */
 	public function getTotal() {
-		switch ($this->name) {
-			case 'a1':
-			case 'a2':
-			case 'b1':
-			case 'b2':
+		switch ($this->flat) {
+			case '2':
+			case '3':
+			case '4':
+			case '5':
 				$prices = $this->prices[$this->persons];
 				break;
-			case 'h3':
-			case 'h4':
-			case 'h5':
+			case '8':
+			case '9':
+			case '10':
 				$prices = $this->prices['einzel'];
 				break;
-			case 'h1':
-			case 'h2':
-			case 'h6':
-			case 'h7':
+			case '6':
+			case '7':
+			case '12':
+			case '13':
 				$prices = $this->prices['doppel'];
 				break;
 			default:
