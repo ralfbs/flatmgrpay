@@ -46,6 +46,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 
 	/**
 	 * is this action dispatched?
+	 * 
 	 * @var boolean
 	 */
 	protected static $_dispatched = false;
@@ -53,7 +54,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	/**
 	 * injectBookingRepository
 	 *
-	 * @param $bookingRepository Tx_Flatmgrpay_Domain_Repository_BookingRepository       	
+	 * @param $bookingRepository Tx_Flatmgrpay_Domain_Repository_BookingRepository        	
 	 * @return void
 	 */
 	public function injectBookingRepository(Tx_Flatmgrpay_Domain_Repository_BookingRepository $bookingRepository) {
@@ -73,7 +74,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	/**
 	 * action show
 	 *
-	 * @param $booking Tx_Flatmgrpay_Domain_Model_Booking       	
+	 * @param $booking Tx_Flatmgrpay_Domain_Model_Booking        	
 	 * @return void
 	 */
 	public function showAction(Tx_Flatmgrpay_Domain_Model_Booking $booking) {
@@ -83,17 +84,22 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	/**
 	 * action new
 	 *
-	 * @param $newBooking @dontvalidate       	
+	 * @param $newBooking @dontvalidate        	
 	 * @return void
 	 */
 	public function newAction(Tx_Flatmgrpay_Domain_Model_Booking $newBooking = NULL) {
+
 		$this->_initPaymentProviders();
 		foreach ($this->_paymentProviders as $providerObj) {
 			$tmpArr = $providerObj->getAvailablePaymentMethods();
 		}
+		if (TYPO3_DLOG) {
+			t3lib_div::devLog('Payment Provider', 'flatmgrpay', 1, $tmpArr);
+		}
 		/*
 		 * @var $flatSession Tx_Flatmgrpay_Session_Flat
 		 */
+		
 		$flatSession = t3lib_div::makeInstance('Tx_Flatmgrpay_Session_Flat');
 		if (array_key_exists('tx_flatmgr_pi1', $_GET)) {
 			$flatSession::writeToSession($_GET['tx_flatmgr_pi1']);
@@ -104,7 +110,11 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		 * @var array 'end', 'days', 'email', 'flatUid', 'flat')
 		 */
 		$flatmgrParams = $flatSession::getParams();
-		$this->view->assignMultiple((array)$flatmgrParams);
+		if (TYPO3_DLOG) {
+		    t3lib_div::devLog('Booking::new() $flatmgrParams', 'flatmgrpay', 1, $flatmgrParams);
+		}
+		
+		$this->view->assignMultiple((array) $flatmgrParams);
 		$this->view->assign('hiddenFields', $flatSession::getParams());
 		$this->view->assign('paymentMethods', $tmpArr);
 		$this->view->assign('newBooking', $newBooking);
@@ -113,12 +123,12 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	/**
 	 * action create
 	 *
-	 * @param $newBooking x_Flatmgrpay_Domain_Model_Booking       	
+	 * @param $newBooking x_Flatmgrpay_Domain_Model_Booking        	
 	 * @return void
 	 */
 	public function createAction(Tx_Flatmgrpay_Domain_Model_Booking $newBooking = null) {
 		if (null == $newBooking) {
-			/*@var $newBooking Tx_Flatmgrpay_Domain_Model_Booking */
+			/* @var $newBooking Tx_Flatmgrpay_Domain_Model_Booking */
 			$newBooking = t3lib_div::makeInstance('Tx_Flatmgrpay_Domain_Model_Booking');
 			$params = t3lib_div::_GP('newBooking');
 			$newBooking->setName($params['flat']);
@@ -141,17 +151,16 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	/**
 	 * action create
 	 *
-	 * @param $newBooking x_Flatmgrpay_Domain_Model_Booking       	
+	 * @param $newBooking x_Flatmgrpay_Domain_Model_Booking        	
 	 * @return void
 	 */
 	public function confirmAction(Tx_Flatmgrpay_Domain_Model_Booking $booking) {
-
 		if (self::$_dispatched) {
 			return '';
 		}
 		$fail = false;
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['flatmgrpay']);
-		$selectedPaymentMethod = $extConf['selectedPaymentMethod']; 
+		$selectedPaymentMethod = $extConf['selectedPaymentMethod'];
 		$providerFactoryObj = tx_paymentlib_providerfactory::getInstance();
 		$providerObj = $providerFactoryObj->getProviderObjectByPaymentMethod($selectedPaymentMethod);
 		$ok = $providerObj->transaction_init(TX_PAYMENTLIB_TRANSACTION_ACTION_AUTHORIZEANDTRANSFER, $selectedPaymentMethod, TX_PAYMENTLIB_GATEWAYMODE_FORM, 'flatmgrpay');
@@ -159,7 +168,6 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 			$this->flashMessageContainer->add('ERROR: Could not initialize transaction.');
 			$fail = true;
 		}
-		
 		$transactionDetails = array(
 			'transaction' => array(
 			'amount' => $booking->getAnzahlung() * 100, 'currency' => 'EUR'
@@ -179,7 +187,9 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 			$this->view->assign('hiddenFields', $hiddenFieldsArr);
 		}
 		$this->view->assign('booking', $booking);
-		self:$_dispatched = true;
+		$this->view->assign('downpaymentRate', $extConf['downpaymentRate']);
+		self:
+		$_dispatched = true;
 	}
 
 	/**
@@ -193,7 +203,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	/**
 	 * action transact - call the actual transaction
 	 *
-	 * @param $newBooking x_Flatmgrpay_Domain_Model_Booking       	
+	 * @param $newBooking x_Flatmgrpay_Domain_Model_Booking        	
 	 * @return void
 	 */
 	public function transactAction(Tx_Flatmgrpay_Domain_Model_Booking $createBooking) {
@@ -202,7 +212,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	/**
 	 * action edit
 	 *
-	 * @param $bookin Tx_Flatmgrpay_Domain_Model_Booking       	
+	 * @param $bookin Tx_Flatmgrpay_Domain_Model_Booking        	
 	 * @return void
 	 */
 	public function editAction(Tx_Flatmgrpay_Domain_Model_Booking $booking) {
@@ -213,7 +223,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	 * action update
 	 *
 	 * @param $booking Tx_Flatmgrpay_Domain_Model_Booking
-	 *       	 * @return void
+	 *        	* @return void
 	 */
 	public function updateAction(Tx_Flatmgrpay_Domain_Model_Booking $booking) {
 		$this->bookingRepository->update($booking);
@@ -224,7 +234,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	/**
 	 * action delete
 	 *
-	 * @param $bookin Tx_Flatmgrpay_Domain_Model_Booking       	
+	 * @param $bookin Tx_Flatmgrpay_Domain_Model_Booking        	
 	 * @return void
 	 */
 	public function deleteAction(Tx_Flatmgrpay_Domain_Model_Booking $booking) {
@@ -251,12 +261,11 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		 */
 		$flatSession = t3lib_div::makeInstance('Tx_Flatmgrpay_Session_Flat');
 		$params = t3lib_div::_GP('tx_flatmgr_pi1');
-		if (!empty($params)) {
+		if (! empty($params)) {
 			$flatSession::writeToSession($params);
 		}
 		$this->view->assign('flatParams', $flatSession::getParams());
 	}
-
 
 	/**
 	 * include and initialize the Paymentlib

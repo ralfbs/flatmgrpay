@@ -31,6 +31,32 @@
 class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
+	 * prices
+	 * 1: Appartment, 1 Person => (Preis/Tag, Preis/Woche, Preis/Monat)
+	 * 2: Appartment, 2 Personen
+	 * einzel: Einzelzimmer
+	 * doppel: Doppelzimmer
+	 *
+	 * @var array
+	 *
+	 *
+	 *
+	 */
+	protected $prices = array(
+		'1' => array(
+		38, 240, 700
+	), '2' => array(
+		65, 400, 700
+	), 'einzel' => array(
+		array(
+		28, 196, 300
+	)
+	), 'doppel' => array(
+		40, 280, 360
+	)
+	);
+
+	/**
 	 * Name
 	 *
 	 * @var string
@@ -84,7 +110,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the startday
 	 *
-	 * @param $startday string       	
+	 * @param $startday string        	
 	 * @return string startday
 	 */
 	public function setStartday($startday) {
@@ -103,7 +129,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the flat
 	 *
-	 * @param $flat integer       	
+	 * @param $flat integer        	
 	 * @return integer flat
 	 */
 	public function setFlat($flat) {
@@ -122,7 +148,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the days
 	 *
-	 * @param $days integer       	
+	 * @param $days integer        	
 	 * @return integer days
 	 */
 	public function setDays($days) {
@@ -141,7 +167,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the persons
 	 *
-	 * @param $persons integer       	
+	 * @param $persons integer        	
 	 * @return integer persons
 	 */
 	public function setPersons($persons) {
@@ -160,7 +186,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the name
 	 *
-	 * @param $name string       	
+	 * @param $name string        	
 	 * @return string name
 	 */
 	public function setName($name) {
@@ -179,7 +205,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Sets the feuser
 	 *
-	 * @param $feuser Tx_Extbase_Domain_Model_FrontendUser       	
+	 * @param $feuser Tx_Extbase_Domain_Model_FrontendUser        	
 	 * @return void
 	 */
 	public function setFeuser(Tx_Extbase_Domain_Model_FrontendUser $feuser) {
@@ -192,31 +218,47 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	 * @return float
 	 */
 	public function getTotal() {
-		switch ((int) $this->getPersons()) {
-			case 1:
-				$costPerDay = 33;
+		switch ($this->name) {
+			case 'a1':
+			case 'a2':
+			case 'b1':
+			case 'b2':
+				$prices = $this->prices[$this->persons];
 				break;
-			case 2:
-				$costPerDay = 28;
+			case 'h3':
+			case 'h4':
+			case 'h5':
+				$prices = $this->prices['einzel'];
 				break;
-			case 3:
-				$costPerDay = 25;
-				break;
-			case 4:
-				$costPerDay = 20;
+			case 'h1':
+			case 'h2':
+			case 'h6':
+			case 'h7':
+				$prices = $this->prices['doppel'];
 				break;
 			default:
-				$costPerDay = 33;
+				$prices = 0;
 				break;
 		}
-		return $this->getDays() * $costPerDay;
+		$days = $this->getDays();
+		if (7 >= $days) {
+			$total = $prices[0] * $days;
+		} elseif (31 >= $days) {
+			$total = $prices[1];
+		} else {
+			$total = $prices[2] * ceil($days / 31);
+		}
+		
+		return $total;
 	}
 
 	/**
 	 * Berechnet die Höhe der notwendig Anzahlung
 	 */
 	public function getAnzahlung() {
-		return $this->getTotal() * 0.2;
+		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['flatmgrpay']);
+		$downpaymentRate = (int) $extConf['downpaymentRate'];
+		return $this->getTotal() * $downpaymentRate / 100;
 	}
 }
 ?>

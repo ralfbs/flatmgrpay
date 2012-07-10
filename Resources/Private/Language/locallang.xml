@@ -14,7 +14,7 @@
 			<label index="tx_flatmgrpay_domain_model_booking.persons">Personen</label>
 			<label index="tx_flatmgrpay_domain_model_booking.feuser">FeUser</label>
 			<label index="tx_flatmgrpay_domain_model_booking.total">Gesamtkosten</label>
-			<label index="tx_flatmgrpay_domain_model_booking.anzahlung">Anzahlung (20%)</label>
+			<label index="tx_flatmgrpay_domain_model_booking.anzahlung">Anzahlung </label>
 		</languageKey>
 	</data>
 </T3locallang>

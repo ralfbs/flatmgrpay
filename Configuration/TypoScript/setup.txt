@@ -40,9 +40,13 @@ plugin.tx_flatmgrpay.widgets {
     view =< plugin.tx_flatmgrpay.view
   }
   
-  
-  
 }  
+
+# add Date picker and custom css file
+#page.includeCSS.flatmgrpaydpcss = EXT:/flatmgrpay/Resources/Public/Css/jquery-ui-1.8.21.custom.css
+#page.includeJS.flatmgrpaydpjs = {$plugin.tx_flatmgrpay.settings.datepickerJs}
+#page.includeJS.flatmgrpayjq = {$plugin.tx_flatmgrpay.settings.jQuery}
+
 
 
 plugin.tx_flatmgrpay._CSS_DEFAULT_STYLE (

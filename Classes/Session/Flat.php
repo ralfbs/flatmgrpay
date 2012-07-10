@@ -79,7 +79,7 @@ class Tx_Flatmgrpay_Session_Flat implements t3lib_Singleton {
 			
 			$params['days'] = ($endTimestamp - $startTimestamp) / 86400;
 		}
-		return $params;
+		return (array)$params;
 	}
 
 	/**
@@ -103,7 +103,7 @@ class Tx_Flatmgrpay_Session_Flat implements t3lib_Singleton {
 	 */
 	protected static function _restoreFromSession() {
 		$sessionData = $GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_flatmgrpay');
-		return unserialize($sessionData);
+		return (array)unserialize($sessionData);
 	}
 
 	/**

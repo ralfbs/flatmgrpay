@@ -1,24 +1,15 @@
 plugin.tx_flatmgrpay {
 	view {
-		# cat=plugin.tx_flatmgrpay/file; type=string; label=Path to template root (FE)
+		# cat=plugin.tx_flatmgrpay/file/d; type=string; label=Path to template root (FE)
 		templateRootPath = EXT:flatmgrpay/Resources/Private/Templates/
-		# cat=plugin.tx_flatmgrpay/file; type=string; label=Path to template partials (FE)
+		# cat=plugin.tx_flatmgrpay/file/e; type=string; label=Path to template partials (FE)
 		partialRootPath = EXT:flatmgrpay/Resources/Private/Partials/
-		# cat=plugin.tx_flatmgrpay/file; type=string; label=Path to template layouts (FE)
+		# cat=plugin.tx_flatmgrpay/file/f; type=string; label=Path to template layouts (FE)
 		layoutRootPath = EXT:flatmgrpay/Resources/Private/Layouts/
 	}
 	persistence {
-		# cat=plugin.tx_flatmgrpay//a; type=string; label=Default storage PID
+		# cat=plugin.tx_flatmgrpay//e; type=string; label=Default storage PID
 		storagePid = 
 	}
-	settings {
-		# cat=plugin.tx_flatmgrpay//a; type=int; label=Kosten für eine Person
-		cost1 = 33	
-		# cat=plugin.tx_flatmgrpay//a; type=int; label=Kosten für zwei Person
-		cost2 = 28	
-		# cat=plugin.tx_flatmgrpay//a; type=int; label=Kosten für drei Person
-		cost3 = 25	
-		# cat=plugin.tx_flatmgrpay//a; type=int; label=Kosten für vier Person
-		cost4 = 20								
-	}
+
 }
