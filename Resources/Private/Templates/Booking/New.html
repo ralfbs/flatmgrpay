@@ -1,5 +1,13 @@
 <f:layout name="Default" />
 
 <f:section name="main">
-	<h1>New</h1>
+	<h1>{flat}</h1>
+
+	<f:flashMessages />
+
+	<p>Zeitraum: {start} - {end} ({days} Tage)</p>
+
+	<f:form action="create" name="newBooking" object="{newBooking}">
+	</f:form>
+
 </f:section>
