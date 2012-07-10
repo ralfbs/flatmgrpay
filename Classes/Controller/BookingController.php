@@ -113,7 +113,6 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		if (TYPO3_DLOG) {
 		    t3lib_div::devLog('Booking::new() $flatmgrParams', 'flatmgrpay', 1, $flatmgrParams);
 		}
-		
 		$this->view->assignMultiple((array) $flatmgrParams);
 		$this->view->assign('hiddenFields', $flatSession::getParams());
 		$this->view->assign('paymentMethods', $tmpArr);
