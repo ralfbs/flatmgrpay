@@ -48,9 +48,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	), '2' => array(
 		65, 400, 700
 	), 'einzel' => array(
-		array(
 		28, 196, 300
-	)
 	), 'doppel' => array(
 		40, 280, 360
 	)
@@ -241,13 +239,14 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 				break;
 		}
 		$days = $this->getDays();
-		if (7 >= $days) {
-			$total = $prices[0] * ceil($days / 7);
-		} elseif (31 >= $days) {
-			$total = $prices[1];
-		} else {
+		if ($days > 31) {
 			$total = $prices[2] * ceil($days / 31);
+		} elseif ($days > 7) {
+			$total = $prices[1] * ceil($days / 7);
+		} else {
+			 $total = $prices[0] * $days;
 		}
+	
 		return $total;
 	}
 
