@@ -215,7 +215,7 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	/**
 	 * Berechnet die Gesamtkosten für den angegebenen Zeitraum
 	 *
-	 * @return float
+	 * @return integer
 	 */
 	public function getTotal() {
 		switch ($this->flat) {
@@ -242,13 +242,12 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 		}
 		$days = $this->getDays();
 		if (7 >= $days) {
-			$total = $prices[0] * $days;
+			$total = $prices[0] * ceil($days / 7);
 		} elseif (31 >= $days) {
 			$total = $prices[1];
 		} else {
 			$total = $prices[2] * ceil($days / 31);
 		}
-		
 		return $total;
 	}
 

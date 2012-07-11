@@ -39,7 +39,7 @@ class Tx_Flatmgrpay_Session_Flat implements t3lib_Singleton {
 	 */
 	public static function writeToSession(array $params = array()) {
 		$session = self::getParams();
-		if (array_key_exists('flatUid', $session) and array_key_exists('flat_Uid', $params)) {
+		if (array_key_exists('flatUid', $session) and array_key_exists('flatUid', $params)) {
 			if ($session['flatUid'] != $params['flatUid']) {
 				unset($session['flat']);
 				unset($session['flatUid']);

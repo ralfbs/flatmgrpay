@@ -46,7 +46,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 
 	/**
 	 * is this action dispatched?
-	 * 
+	 *
 	 * @var boolean
 	 */
 	protected static $_dispatched = false;
@@ -88,7 +88,6 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	public function newAction(Tx_Flatmgrpay_Domain_Model_Booking $newBooking = NULL) {
-
 		$this->_initPaymentProviders();
 		foreach ($this->_paymentProviders as $providerObj) {
 			$tmpArr = $providerObj->getAvailablePaymentMethods();
@@ -99,7 +98,6 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		/*
 		 * @var $flatSession Tx_Flatmgrpay_Session_Flat
 		 */
-		
 		$flatSession = t3lib_div::makeInstance('Tx_Flatmgrpay_Session_Flat');
 		if (array_key_exists('tx_flatmgr_pi1', $_GET)) {
 			$flatSession::writeToSession($_GET['tx_flatmgr_pi1']);
@@ -111,7 +109,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		 */
 		$flatmgrParams = $flatSession::getParams();
 		if (TYPO3_DLOG) {
-		    t3lib_div::devLog('Booking::new() $flatmgrParams', 'flatmgrpay', 1, $flatmgrParams);
+			t3lib_div::devLog('Booking::new() $flatmgrParams', 'flatmgrpay', 1, $flatmgrParams);
 		}
 		$this->view->assignMultiple((array) $flatmgrParams);
 		$this->view->assign('hiddenFields', $flatSession::getParams());
@@ -154,9 +152,10 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	public function confirmAction(Tx_Flatmgrpay_Domain_Model_Booking $booking) {
-		if (self::$_dispatched) {
-			return '';
-		}
+		/* @var $flatSession Tx_Flatmgrpay_Session_Flat */
+		$flatSession = t3lib_div::makeInstance('Tx_Flatmgrpay_Session_Flat');
+        $flatParams = $flatSession->getParams();
+		
 		$fail = false;
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['flatmgrpay']);
 		$selectedPaymentMethod = $extConf['selectedPaymentMethod'];
@@ -167,6 +166,9 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 			$this->flashMessageContainer->add('ERROR: Could not initialize transaction.');
 			$fail = true;
 		}
+		$booking->setName($flatParams['flat']);
+		$booking->setFlat($flatParams['flatUid']);
+		
 		$transactionDetails = array(
 			'transaction' => array(
 			'amount' => $booking->getAnzahlung() * 100, 'currency' => 'EUR'
@@ -187,8 +189,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		}
 		$this->view->assign('booking', $booking);
 		$this->view->assign('downpaymentRate', $extConf['downpaymentRate']);
-		self:
-		$_dispatched = true;
+
 	}
 
 	/**

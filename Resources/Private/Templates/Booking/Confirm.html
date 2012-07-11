@@ -1,53 +1,42 @@
 <f:layout name="Default" />
 
-This template displays a NEW form for the current domain object.
-
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-  Resources:
-    Private:
-      Templates:
-        New.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
 
 <f:section name="main">
-<div class="tx-flatmgrpay-confirm">
-<h1>Buchung bestätigen</h1>
+	<div class="tx-flatmgrpay-confirm">
+		<h1>Buchung bestätigen</h1>
 
-<f:flashMessages />
+		<f:flashMessages />
 
-<f:render partial="Booking/Properties" arguments="{booking:booking}" />
+		<f:render partial="Booking/Properties" arguments="{booking:booking}" />
 
-<table class="tx-flatmgrpay" >
-	<tr>
-		<td>
-			<f:translate key="tx_flatmgrpay_domain_model_booking.total" />
-		</td>
-		<td>
-			<f:format.currency currencySign="€">{booking.total}</f:format.currency>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<f:translate key="tx_flatmgrpay_domain_model_booking.anzahlung" /> ({downpaymentRate}%)
-		</td>
-		<td>
-			<f:format.currency currencySign="€">{booking.anzahlung}</f:format.currency>
-		</td>
-	</tr>
-</table>
+		<table class="tx-flatmgrpay">
+			<tr>
+				<td><f:translate key="tx_flatmgrpay_domain_model_booking.total" />
+				</td>
+				<td><f:format.currency currencySign="€">{booking.total}</f:format.currency>
+				</td>
+			</tr>
+			<tr>
+				<td><f:translate
+						key="tx_flatmgrpay_domain_model_booking.anzahlung" />
+					({downpaymentRate}%)</td>
+				<td><f:format.currency currencySign="€">{booking.anzahlung}</f:format.currency>
+				</td>
+			</tr>
+		</table>
 
-<f:link.action action="new">Ändern</f:link.action><br />
+		<f:link.action action="new">Ändern</f:link.action>
+		<br />
 
-<form method="post" action="{formAction}">
-	<f:for each="{hiddenFields}" as="hiddenField" key="name">
-		<input name='{name}' type="hidden" value="{hiddenField}" />
-	</f:for>
-	<input type="submit" value="<f:format.currency currencySign="€">{booking.anzahlung}</f:format.currency> jetzt online zahlen" />
-	<p> Wir leiten Sie gesicherte Seiten von WorldPay weiter zur Zahlungsabwicklung</p>
-</form>
-
-
-
+		<form method="post" action="{formAction}">
+			<f:for each="{hiddenFields}" as="hiddenField" key="name">
+				<input name='{name}' type="hidden" value="{hiddenField}" />
+			</f:for>
+			<input type="submit" value="<f:format.currency currencySign="€">{booking.anzahlung}
+			</f:format.currency>
+			jetzt online zahlen" />
+			<p>Wir leiten Sie gesicherte Seiten von WorldPay weiter zur
+				Zahlungsabwicklung</p>
+		</form>
+	</div>
 </f:section>
