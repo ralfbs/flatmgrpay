@@ -25,16 +25,12 @@
 			</tr>
 		</table>
 
-		<f:link.action action="new">Ändern</f:link.action>
-		<br />
-
 		<form method="post" action="{formAction}">
 			<f:for each="{hiddenFields}" as="hiddenField" key="name">
 				<input name='{name}' type="hidden" value="{hiddenField}" />
 			</f:for>
 			<input type="submit" value="<f:format.currency currencySign="€">{booking.anzahlung}
-			</f:format.currency>
-			jetzt online zahlen" />
+			</f:format.currency> online anzahlen" />
 			<p>Wir leiten Sie gesicherte Seiten von WorldPay weiter zur
 				Zahlungsabwicklung</p>
 		</form>

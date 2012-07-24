@@ -38,9 +38,6 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	 * doppel: Doppelzimmer
 	 *
 	 * @var array
-	 *
-	 *
-	 *
 	 */
 	protected $prices = array(
 		'1' => array(
@@ -67,6 +64,12 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	 * @var integer @validate NotEmpty
 	 */
 	protected $flat;
+
+	/**
+	 *
+	 * @var Tx_Flatmgrpay_Domain_Model_Flat
+	 */
+	protected $flatObject;
 
 	/**
 	 * Anreisetag
@@ -211,43 +214,83 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 	}
 
 	/**
-	 * Berechnet die Gesamtkosten für den angegebenen Zeitraum
 	 *
-	 * @return integer
+	 * @return array pricelist for different durations
+	 * @param integer $flat        	
+	 * @param integer $persons        	
 	 */
-	public function getTotal() {
-		switch ($this->flat) {
+	public function getPrices($flat, $persons) {
+		switch ($flat) {
+			// Appartment (1-2 Pers)
 			case '2':
 			case '3':
 			case '4':
 			case '5':
-				$prices = $this->prices[$this->persons];
+				$prices = $this->prices[$persons];
 				break;
+			// Hostelzimmer (ein Bett: einzel)
 			case '8':
 			case '9':
-			case '10':
 				$prices = $this->prices['einzel'];
 				break;
+			// Hostelzimmer (zwei Betten: doppel)
 			case '6':
 			case '7':
+			case '10':
+			case '11':
 			case '12':
 			case '13':
 				$prices = $this->prices['doppel'];
 				break;
 			default:
-				$prices = 0;
+				$prices = array(
+					0, 0, 0
+				);
 				break;
 		}
-		$days = $this->getDays();
-		if ($days > 31) {
-			$total = $prices[2] * ceil($days / 31);
-		} elseif ($days > 7) {
-			$total = $prices[1] * ceil($days / 7);
-		} else {
-			 $total = $prices[0] * $days;
+		return $prices;
+	}
+
+	/**
+	 * calculate days, weeks or months and select the proper price
+	 * moved to this method for unit testing
+	 *
+	 * @param integer $days        	
+	 * @return float
+	 */
+	public function getTotalByDays($days) {
+		$prices = $this->getPrices($this->flat, $this->persons);
+		$daysRemaining = $days;
+		$total = 0;
+		$months = 0;
+		while ($daysRemaining > 30) {
+			$months ++;
+			$daysRemaining -= 30;
+			$total += $prices[2];
 		}
-	
+		$weeks = 0;
+		while ($daysRemaining > 6) {
+			$weeks ++;
+			$daysRemaining -= 6;
+			$total += $prices[1];
+		}
+		if (TYPO3_DLOG) {
+			t3lib_div::devLog('getTotalByDays', 'flatmgrpay', - 1, array(
+				'days' => $days, "months" => $months, 'weeks' => $weeks, 'daysRemaining' => $daysRemaining
+			));
+		}
+		$total += $daysRemaining * $prices[0];
 		return $total;
+	}
+
+	/**
+	 * Berechnet die Gesamtkosten für den angegebenen Zeitraum
+	 *
+	 * @return integer
+	 */
+	public function getTotal() {
+		$prices = $this->getPrices($this->flat, $this->persons);
+		return $this->getTotalByDays($this->days);
 	}
 
 	/**
@@ -257,6 +300,22 @@ class Tx_Flatmgrpay_Domain_Model_Booking extends Tx_Extbase_DomainObject_Abstrac
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['flatmgrpay']);
 		$downpaymentRate = (int) $extConf['downpaymentRate'];
 		return $this->getTotal() * $downpaymentRate / 100;
+	}
+
+	/**
+	 *
+	 * @return Tx_Flatmgrpay_Domain_Model_Flat
+	 */
+	public function getFlatObject($flat) {
+		if (! $this->flatObject instanceof Tx_Flatmgrpay_Domain_Model_Flat) {
+			/*
+			 * @var $flatRepositry
+			 * Tx_Flatmgrpay_Domain_Repository_FlatRepository
+			 */
+			$flatRepositry = t3lib_div::makeInstance('Tx_Flatmgrpay_Domain_Repository_FlatRepository');
+			$this->flatObject = $flatRepositry->getFlatByUid($flat);
+		}
+		return $this->flatObject;
 	}
 }
 ?>

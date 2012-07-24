@@ -1,26 +1,24 @@
-<table class="tx-flatmgrpay" >
+<table class="tx-flatmgrpay">
 	<tr>
-		<td>
-			<f:translate key="tx_flatmgrpay_domain_model_booking.startday" />
+		<td><f:translate key="tx_flatmgrpay_domain_model_booking.flat" />
 		</td>
-		<td>
-			{booking.startday}
-		</td>
+		<td>{booking.name}</td>
 	</tr>
 	<tr>
-		<td>
-			<f:translate key="tx_flatmgrpay_domain_model_booking.days" />
-		</td>
-		<td>
-			{booking.days}
-		</td>
+		<td><f:translate
+				key="tx_flatmgrpay_domain_model_booking.startday" /></td>
+		<td>{booking.startday}</td>
 	</tr>
 	<tr>
-		<td>
-			<f:translate key="tx_flatmgrpay_domain_model_booking.persons" />
+		<td><f:translate key="tx_flatmgrpay_domain_model_booking.days" />
 		</td>
-		<td>
-			{booking.persons}
-		</td>
+		<td>{booking.days}</td>
 	</tr>
+	<f:if condition="{booking.persons} > 0">
+		<tr>
+			<td><f:translate
+					key="tx_flatmgrpay_domain_model_booking.persons" /></td>
+			<td>{booking.persons}</td>
+		</tr>
+	</f:if>
 </table>

@@ -105,7 +105,8 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		/**
 		 * restore the session
 		 *
-		 * @var array 'end', 'days', 'email', 'flatUid', 'flat')
+		 * @var array 'end', 'days', 'email', 'flatUid', 'name', 'capacity',
+		 *      'category')
 		 */
 		$flatmgrParams = $flatSession::getParams();
 		if (TYPO3_DLOG) {
@@ -154,8 +155,7 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 	public function confirmAction(Tx_Flatmgrpay_Domain_Model_Booking $booking) {
 		/* @var $flatSession Tx_Flatmgrpay_Session_Flat */
 		$flatSession = t3lib_div::makeInstance('Tx_Flatmgrpay_Session_Flat');
-        $flatParams = $flatSession->getParams();
-		
+		$flatParams = $flatSession->getParams();
 		$fail = false;
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['flatmgrpay']);
 		$selectedPaymentMethod = $extConf['selectedPaymentMethod'];
@@ -166,14 +166,14 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 			$this->flashMessageContainer->add('ERROR: Could not initialize transaction.');
 			$fail = true;
 		}
-		$booking->setName($flatParams['flat']);
+		$booking->setName($flatParams['name']);
 		$booking->setFlat($flatParams['flatUid']);
-		
+		$reference = sprintf("Zimmer %s von %s bis %s (Referenz: %s)", $flatParams['name'], $flatParams['start'], $flatParams['end'], $booking->getUid());
 		$transactionDetails = array(
 			'transaction' => array(
 			'amount' => $booking->getAnzahlung() * 100, 'currency' => 'EUR'
 		), 'options' => array(
-			'reference' => $booking->getUid()
+			'reference' => $reference
 		)
 		);
 		$ok = $providerObj->transaction_setDetails($transactionDetails);
@@ -189,7 +189,6 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		}
 		$this->view->assign('booking', $booking);
 		$this->view->assign('downpaymentRate', $extConf['downpaymentRate']);
-
 	}
 
 	/**
@@ -262,6 +261,20 @@ class Tx_Flatmgrpay_Controller_BookingController extends Tx_Extbase_MVC_Controll
 		$flatSession = t3lib_div::makeInstance('Tx_Flatmgrpay_Session_Flat');
 		$params = t3lib_div::_GP('tx_flatmgr_pi1');
 		if (! empty($params)) {
+			if (array_key_exists('flatUid', $params)) {
+				/*
+				 * @var $flatRepositry
+				 * Tx_Flatmgrpay_Domain_Repository_FlatRepository
+				 */
+				$flatRepositry = t3lib_div::makeInstance('Tx_Flatmgrpay_Domain_Repository_FlatRepository');
+				$flat = $flatRepositry->getFlatByUid($params['flatUid']);
+				$params['name'] = $flat->getName();
+				$params['capacity'] = $flat->getCapacity();
+				$params['category'] = $flat->getCategory();
+			}
+			if (TYPO3_DLOG) {
+				t3lib_div::devLog('scan Params', 'flatmgrpay', - 1, $params);
+			}
 			$flatSession::writeToSession($params);
 		}
 		$this->view->assign('flatParams', $flatSession::getParams());

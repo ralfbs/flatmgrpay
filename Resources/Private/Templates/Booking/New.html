@@ -1,7 +1,7 @@
 <f:layout name="Default" />
 
 <f:section name="main">
-	<h1>{flat}</h1>
+	<h1>{name}</h1>
 
 	<f:flashMessages />
 
@@ -11,12 +11,14 @@
 		<f:for each="{hiddenFields}" as="hiddenField" key="key">
 			<input name="newBooking[{key}]" type="hidden" value="{hiddenField}" />
 		</f:for>
-		<label for="persons"><f:translate
-				key="tx_flatmgrpay_domain_model_booking.persons" /></label>
-		<select name="newBooking[persons]">
-			<option value="1">1</option>
-			<option value="2">2</option>
-		</select>
+		<f:if condition="{category} == 2">
+			<label for="persons"><f:translate
+					key="tx_flatmgrpay_domain_model_booking.persons" /></label>
+			<select name="newBooking[persons]">
+				<option value="1">1</option>
+				<option value="2">2</option>
+			</select>
+		</f:if>
 		<f:form.submit value="{flat} jetzt reservieren" />
 	</f:form>
 

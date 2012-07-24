@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,21 +22,23 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Test case for class Tx_Flatmgrpay_Domain_Model_Booking.
  *
  * @version $Id$
  * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
+ * @license http://www.gnu.org/licenses/gpl.html GNU General Public License,
+ *          version 3 or later
+ *         
  * @package TYPO3
  * @subpackage Flat Manager Payment
- *
+ *            
  * @author Ralf Schneider <ralf@hr-interactive.de>
  */
 class Tx_Flatmgrpay_Domain_Model_BookingTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+
 	/**
+	 *
 	 * @var Tx_Flatmgrpay_Domain_Model_Booking
 	 */
 	protected $fixture;
@@ -53,112 +54,114 @@ class Tx_Flatmgrpay_Domain_Model_BookingTest extends Tx_Extbase_Tests_Unit_BaseT
 	/**
 	 * @test
 	 */
-	public function getNameReturnsInitialValueForString() { }
+	public function getNameReturnsInitialValueForString() {
+	}
 
 	/**
 	 * @test
 	 */
-	public function setNameForStringSetsName() { 
+	public function setNameForStringSetsName() {
 		$this->fixture->setName('Conceived at T3CON10');
-
-		$this->assertSame(
-			'Conceived at T3CON10',
-			$this->fixture->getName()
-		);
-	}
-	
-	/**
-	 * @test
-	 */
-	public function getFlatReturnsInitialValueForInteger() { 
-		$this->assertSame(
-			0,
-			$this->fixture->getFlat()
-		);
+		$this->assertSame('Conceived at T3CON10', $this->fixture->getName());
 	}
 
 	/**
 	 * @test
 	 */
-	public function setFlatForIntegerSetsFlat() { 
+	public function setFlatForIntegerSetsFlat() {
 		$this->fixture->setFlat(12);
-
-		$this->assertSame(
-			12,
-			$this->fixture->getFlat()
-		);
+		$this->assertSame(12, $this->fixture->getFlat());
 	}
-	
-	/**
-	 * @test
-	 */
-	public function getStartdayReturnsInitialValueForString() { }
 
 	/**
 	 * @test
 	 */
-	public function setStartdayForStringSetsStartday() { 
+	public function getStartdayReturnsInitialValueForString() {
+	}
+
+	/**
+	 * @test
+	 */
+	public function setStartdayForStringSetsStartday() {
 		$this->fixture->setStartday('Conceived at T3CON10');
-
-		$this->assertSame(
-			'Conceived at T3CON10',
-			$this->fixture->getStartday()
-		);
-	}
-	
-	/**
-	 * @test
-	 */
-	public function getDaysReturnsInitialValueForInteger() { 
-		$this->assertSame(
-			0,
-			$this->fixture->getDays()
-		);
+		$this->assertSame('Conceived at T3CON10', $this->fixture->getStartday());
 	}
 
 	/**
 	 * @test
 	 */
-	public function setDaysForIntegerSetsDays() { 
+	public function setDaysForIntegerSetsDays() {
 		$this->fixture->setDays(12);
-
-		$this->assertSame(
-			12,
-			$this->fixture->getDays()
-		);
-	}
-	
-	/**
-	 * @test
-	 */
-	public function getPersonsReturnsInitialValueForInteger() { 
-		$this->assertSame(
-			0,
-			$this->fixture->getPersons()
-		);
+		$this->assertSame(12, $this->fixture->getDays());
 	}
 
 	/**
 	 * @test
 	 */
-	public function setPersonsForIntegerSetsPersons() { 
+	public function setPersonsForIntegerSetsPersons() {
 		$this->fixture->setPersons(12);
-
-		$this->assertSame(
-			12,
-			$this->fixture->getPersons()
-		);
+		$this->assertSame(12, $this->fixture->getPersons());
 	}
-	
-	/**
-	 * @test
-	 */
-	public function getFeuserReturnsInitialValueForTx_Extbase_Domain_Model_FrontendUser() { }
 
 	/**
 	 * @test
 	 */
-	public function setFeuserForTx_Extbase_Domain_Model_FrontendUserSetsFeuser() { }
-	
+	public function getPricesEinzelzimmer() {
+		$prices = $this->fixture->getPrices(8, 1);
+		$this->assertEquals(array(
+			28, 196, 300
+		), $prices);
+		$prices = $this->fixture->getPrices(9, 1);
+		$this->assertEquals(array(
+			28, 196, 300
+		), $prices);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPricesDoppelzimmer() {
+		$prices = $this->fixture->getPrices(6, 2);
+		$this->assertEquals(array(
+			40, 280, 360
+		), $prices);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPricesAppartment1Person() {
+		$prices = $this->fixture->getPrices(2, 1);
+		$this->assertEquals(array(
+			38, 240, 700
+		), $prices);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPricesAppartment2Personen() {
+		$prices = $this->fixture->getPrices(2, 2);
+		$this->assertEquals(array(
+			65, 400, 700
+		), $prices);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTotalEinzelzimmerDay() {
+		$this->fixture->setFlat(8);
+		$this->assertEquals(28, $this->fixture->getTotalByDays(1));
+		$this->assertEquals(168, $this->fixture->getTotalByDays(6));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTotalEinzelzimmerWeek() {
+		$this->fixture->setFlat(8);
+		$this->assertEquals(196, $this->fixture->getTotalByDays(7));
+	}
 }
 ?>

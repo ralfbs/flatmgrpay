@@ -6,6 +6,20 @@ plugin.tx_flatmgrpay {
 	}
 	persistence {
 		storagePid = {$plugin.tx_flatmgrpay.persistence.storagePid}
+		classes {
+			Tx_Flatmgrpay_Domain_Model_Flat {
+				mapping {
+					tableName = tx_flatmgr_flat
+					columns {
+            			uid.mapOnProperty = uid
+            			name.mapOnProperty = name
+            			minprice.mapOnProperty = minprice
+            			category.mapOnProperty = category
+            			capacity.mapOnProperty = capacity
+        			}
+				}
+			}
+		}
 	}
 	settings {
 		cost = {$plugin.tx_flatmgrpay.settings.cost}
